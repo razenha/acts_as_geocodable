@@ -44,7 +44,8 @@ module CollectiveIdea #:nodoc:
           
           has_one :geocoding, :as => :geocodable, :include => :geocode, :dependent => :destroy
           
-          after_save :attach_geocode          
+          after_save :prepare_attach_geocode          
+          
           
           include CollectiveIdea::Acts::Geocodable::InstanceMethods
           extend CollectiveIdea::Acts::Geocodable::SingletonMethods
@@ -255,7 +256,20 @@ module CollectiveIdea #:nodoc:
           self.geocode.distance_to(geocode, units, formula)
         end
         
+       def attach_geocode_now
+         attach_geocode
+       end
+
+       def attach_geocode_with_delay
+         self.send_later :attach_geocode
+       end
+        
       protected
+        
+        def prepare_attach_geocode
+          AttachStrategy::strategy.attach(self)          
+        end
+   
         
         # Perform the geocoding
         def attach_geocode

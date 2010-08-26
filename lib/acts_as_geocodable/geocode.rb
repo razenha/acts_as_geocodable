@@ -5,6 +5,9 @@ class Geocode < ActiveRecord::Base
 
   cattr_accessor :geocoder
   
+  
+  
+  
   def distance_to(destination, units = :miles, formula = :haversine)
     if destination && destination.latitude && destination.longitude
       Graticule::Distance.const_get(formula.to_s.camelize).distance(self, destination, units)

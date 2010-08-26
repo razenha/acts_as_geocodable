@@ -69,5 +69,7 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<graticule>, [">= 1.0.0.pre2"])
   end
+  
+  d.add_dependency(%q<delayed_job>. [">= 2.0.3"])
 end
 
